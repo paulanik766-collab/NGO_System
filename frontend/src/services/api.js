@@ -55,4 +55,28 @@ export const assignmentAPI = {
   getByOfficer: (officerId) => API.get(`/assignments/officer/${officerId}`),
 };
 
+// ─── Employee API (Member 3) ─────────────────────────────────────────────────────
+export const employeeAPI = {
+  /** GET /api/employees?search=&staffType=&employmentStatus=&department=&designation=&page=&limit= */
+  getAll: (params = {}) => API.get('/employees', { params }),
+
+  /** GET /api/employees/stats */
+  getStats: () => API.get('/employees/stats'),
+
+  /** GET /api/employees/:id */
+  getById: (id) => API.get(`/employees/${id}`),
+
+  /** POST /api/employees */
+  create: (data) => API.post('/employees', data),
+
+  /** PUT /api/employees/:id */
+  update: (id, data) => API.put(`/employees/${id}`, data),
+
+  /** PATCH /api/employees/:id/status */
+  updateStatus: (id, status) => API.patch(`/employees/${id}/status`, { status }),
+
+  /** DELETE /api/employees/:id */
+  delete: (id) => API.delete(`/employees/${id}`),
+};
+
 export default API;
