@@ -1,45 +1,39 @@
 /**
- * Employee Routes — Scaffold for Member 3 (SE331 Group 04 Section C2)
- * Member 3 should replace/expand this file with full Employee Management CRUD.
- * This minimal version lets Member 1 seed test field officers.
+ * Employee Routes — Member 3 (SE331 Group 04 Section C2)
+ * Full CRUD, search, status management, and statistics for NGO Employees.
  */
 const express = require('express');
 const router = express.Router();
-const Employee = require('../models/Employee');
+const {
+  getEmployees,
+  getEmployeeStats,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  updateEmployeeStatus,
+  deleteEmployee,
+} = require('../controllers/employeeController');
 
-// GET /api/employees — List employees (Member 3 will expand)
-router.get('/', async (req, res) => {
-  try {
-    const employees = await Employee.find().sort({ fullName: 1 });
-    res.json({ success: true, data: employees });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
+// ─── Route Definitions ────────────────────────────────────────────────────────
+// GET /api/employees/stats — Aggregated employee statistics
+router.get('/stats', getEmployeeStats);
 
-// POST /api/employees — Create employee (for seeding / Member 3 to expand)
-router.post('/', async (req, res) => {
-  try {
-    const emp = new Employee(req.body);
-    const saved = await emp.save();
-    res.status(201).json({ success: true, data: saved });
-  } catch (err) {
-    if (err.code === 11000) {
-      return res.status(409).json({ success: false, message: 'Employee ID already exists.' });
-    }
-    res.status(400).json({ success: false, message: err.message });
-  }
-});
+// GET /api/employees — List employees with search, filter, pagination
+router.get('/', getEmployees);
 
-// GET /api/employees/:id
-router.get('/:id', async (req, res) => {
-  try {
-    const emp = await Employee.findById(req.params.id);
-    if (!emp) return res.status(404).json({ success: false, message: 'Employee not found' });
-    res.json({ success: true, data: emp });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
+// POST /api/employees — Register a new employee
+router.post('/', createEmployee);
+
+// GET /api/employees/:id — Get details of a single employee
+router.get('/:id', getEmployeeById);
+
+// PUT /api/employees/:id — Update employee profile
+router.put('/:id', updateEmployee);
+
+// PATCH /api/employees/:id/status — Update employment status
+router.patch('/:id/status', updateEmployeeStatus);
+
+// DELETE /api/employees/:id — Delete employee record
+router.delete('/:id', deleteEmployee);
 
 module.exports = router;
