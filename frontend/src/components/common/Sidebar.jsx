@@ -39,15 +39,18 @@ const Sidebar = () => {
         </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
-          Team Workspaces (Stubs)
+          Member 2 Tasks
         </div>
-        <div
-          className="nav-link"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
-          title="Assigned to Member 2: Verification, NID/photo upload"
+        <NavLink
+          to="/verification"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           <span className="nav-icon">🪪</span>
-          <span>Member Verification (M2)</span>
+          <span>Member Verification</span>
+        </NavLink>
+
+        <div className="nav-section-title" style={{ marginTop: '16px' }}>
+          Team Workspaces (Stubs)
         </div>
         <div
           className="nav-link"
