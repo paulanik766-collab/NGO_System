@@ -1,0 +1,33 @@
+{
+  "name": "ngo-management-backend",
+  "version": "1.0.0",
+  "description": "NGO Management System - Backend API (SE331 Group 04 Section C2)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --forceExit"
+  },
+  "keywords": [
+    "ngo",
+    "management",
+    "express",
+    "mongodb"
+  ],
+  "author": "Group 04 Section C2",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mongoose": "^7.6.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^11.3.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  }
+}
