@@ -5,6 +5,7 @@ import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import FieldOfficersPage from './pages/FieldOfficersPage';
 import EmployeesPage from './pages/EmployeesPage';
+import VerificationPage from './pages/VerificationPage';
 import './styles/global.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/members" element={<MembersPage />} />
             <Route path="/field-officers" element={<FieldOfficersPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
+            <Route path="/verification" element={<VerificationPage />} />
           </Routes>
         </main>
       </div>

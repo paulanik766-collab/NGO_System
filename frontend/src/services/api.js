@@ -79,4 +79,28 @@ export const employeeAPI = {
   delete: (id) => API.delete(`/employees/${id}`),
 };
 
+// ─── Verification API (Member 2) ───────────────────────────────────────────────
+export const verificationAPI = {
+  /** GET /api/verifications?status=&documentType=&member= */
+  getAll: (params = {}) => API.get('/verifications', { params }),
+
+  /** GET /api/verifications/:id */
+  getById: (id) => API.get(`/verifications/${id}`),
+
+  /** GET /api/verifications/member/:memberId */
+  getByMember: (memberId) => API.get(`/verifications/member/${memberId}`),
+
+  /** POST /api/verifications/upload (multipart/form-data) */
+  upload: (formData) =>
+    API.post('/verifications/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+
+  /** PATCH /api/verifications/:id/status */
+  updateStatus: (id, data) => API.patch(`/verifications/${id}/status`, data),
+
+  /** DELETE /api/verifications/:id */
+  delete: (id) => API.delete(`/verifications/${id}`),
+};
+
 export default API;

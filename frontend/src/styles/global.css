@@ -353,3 +353,31 @@ tbody tr:hover { background: var(--gray-50); }
   .page-content { padding: 16px; }
   .page-header { padding: 12px 16px; }
 }
+
+/* ─── Member 2: Verification Styles ─────────────────────── */
+.badge-pending { background: var(--warning-light); color: var(--warning); }
+.badge-verified { background: var(--success-light); color: var(--success); }
+.badge-rejected { background: var(--danger-light); color: var(--danger); }
+
+.file-input-zone {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  background: var(--gray-50);
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+.file-input-zone:hover {
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.document-preview {
+  max-width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: var(--border-radius);
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+}
+
