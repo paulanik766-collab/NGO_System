@@ -21,6 +21,17 @@ const Sidebar = () => {
         </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
+          Member 3 Tasks (Active)
+        </div>
+        <NavLink
+          to="/employees"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">👔</span>
+          <span>Employee Management</span>
+        </NavLink>
+
+        <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Member 1 Tasks
         </div>
         <NavLink
@@ -36,6 +47,13 @@ const Sidebar = () => {
         >
           <span className="nav-icon">📋</span>
           <span>Officer Assignments</span>
+        </NavLink>
+        <NavLink
+          to="/savings"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">💰</span>
+          <span>Savings Management</span>
         </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
@@ -66,19 +84,11 @@ const Sidebar = () => {
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Team Workspaces (Stubs)
         </div>
-        <div
-          className="nav-link"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
-          title="Assigned to Member 3: Employee CRUD & Designations"
-        >
-          <span className="nav-icon">👔</span>
-          <span>Employee Mgmt (M3)</span>
-        </div>
       </nav>
 
       <div style={{ padding: '16px 20px', borderTop: '1px solid #334155', fontSize: '0.75rem', color: '#94a3b8' }}>
-        <strong>Member 1 Workspace</strong>
-        <div>DIU Software Engineering</div>
+        <strong>Member 3 Workspace</strong>
+        <div>DIU Software Engineering (SE331)</div>
       </div>
     </aside>
   );

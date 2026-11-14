@@ -230,6 +230,12 @@ tbody tr:hover { background: var(--gray-50); }
 .badge-inactive { background: var(--gray-100); color: var(--gray-500); }
 .badge-removed { background: var(--danger-light); color: var(--danger); }
 .badge-primary { background: var(--primary-light); color: var(--primary); }
+.badge-warning, .badge-leave { background: #fef3c7; color: #b45309; }
+.badge-info, .badge-probation { background: #e0f2fe; color: #0284c7; }
+.badge-danger, .badge-terminated { background: #fee2e2; color: #b91c1c; }
+.badge-admin { background: #f3e8ff; color: #7e22ce; }
+.badge-field { background: #ecfdf5; color: #047857; }
+
 
 /* ─── Alerts / Notifications ────────────────────────────── */
 .alert {
