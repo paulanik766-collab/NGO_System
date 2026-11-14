@@ -4,6 +4,7 @@ import Sidebar from './components/common/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import FieldOfficersPage from './pages/FieldOfficersPage';
+import SavingsPage from './pages/SavingsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import VerificationPage from './pages/VerificationPage';
 import './styles/global.css';
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/field-officers" element={<FieldOfficersPage />} />
+            <Route path="/savings" element={<SavingsPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/verification" element={<VerificationPage />} />
           </Routes>

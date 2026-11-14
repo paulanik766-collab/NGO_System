@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { memberAPI, assignmentAPI, employeeAPI } from '../services/api';
+import { memberAPI, assignmentAPI, savingsAPI, employeeAPI } from '../services/api';
 import { LoadingSpinner } from '../components/common/UIComponents';
 
 const DashboardPage = () => {
@@ -10,6 +10,8 @@ const DashboardPage = () => {
     inactiveMembers: 0,
     totalOfficers: 0,
     activeAssignments: 0,
+    totalSavings: 0,
+    activeSavingsAccounts: 0,
     totalEmployees: 0,
     adminEmployees: 0,
     fieldEmployees: 0,
@@ -22,13 +24,14 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [membersRes, officersRes, assignmentsRes, employeeStatsRes, employeesRes] =
+        const [membersRes, officersRes, assignmentsRes, employeeStatsRes, employeesRes, savingsRes] =
           await Promise.all([
             memberAPI.getAll({ limit: 100 }),
             assignmentAPI.getFieldOfficers(),
             assignmentAPI.getAll({ limit: 100 }),
-            employeeAPI.getStats(),
-            employeeAPI.getAll({ limit: 5 }),
+            employeeAPI.getStats().catch(() => ({ data: { data: {} } })),
+            employeeAPI.getAll({ limit: 5 }).catch(() => ({ data: { data: [] } })),
+            savingsAPI.getStats().catch(() => ({ data: { data: {} } })),
           ]);
 
         const allMembers = membersRes.data.data || [];
@@ -36,6 +39,7 @@ const DashboardPage = () => {
         const allOfficers = officersRes.data.data || [];
         const empStats = employeeStatsRes.data?.data || {};
         const staffList = employeesRes.data?.data || [];
+        const savingsData = savingsRes.data?.data || {};
 
         setStats({
           totalMembers: allMembers.length,
@@ -43,6 +47,8 @@ const DashboardPage = () => {
           inactiveMembers: allMembers.filter((m) => m.status === 'Inactive').length,
           totalOfficers: allOfficers.length,
           activeAssignments: allAssignments.filter((a) => a.status === 'Active').length,
+          totalSavings: savingsData.totalBalance || 0,
+          activeSavingsAccounts: savingsData.activeAccounts || 0,
           totalEmployees: empStats.total || 0,
           adminEmployees: empStats.administrative || 0,
           fieldEmployees: empStats.fieldStaff || 0,
@@ -80,15 +86,17 @@ const DashboardPage = () => {
           <Link to="/field-officers" className="btn btn-secondary">
             Officer Assignments
           </Link>
+          <Link to="/savings" className="btn btn-primary" style={{ backgroundColor: '#16a34a', borderColor: '#16a34a' }}>
+            💰 Savings Ledger
+          </Link>
         </div>
       </div>
 
       <div className="page-content">
-        {/* Module Scope Notice for Faculty/Evaluator */}
         <div className="alert alert-info" style={{ marginBottom: '24px' }}>
           <span className="alert-icon">ℹ</span>
           <div>
-            <strong>Evaluation Overview:</strong> Member 1 (<strong>Member Management & Officer Assignments</strong>) and Member 3 (<strong>Employee Management & Designations</strong>) are fully implemented and integrated.
+            <strong>Integrated Overview:</strong> Member 1 (<strong>Member Management, Officer Assignments & Savings Management</strong>), Member 2 (<strong>Member Verification</strong>), and Member 3 (<strong>Employee Management</strong>) are active in this system.
           </div>
         </div>
 
@@ -98,16 +106,6 @@ const DashboardPage = () => {
             <div className="stat-icon">👔</div>
             <div className="stat-value" style={{ color: '#4f46e5' }}>{stats.totalEmployees}</div>
             <div className="stat-label">Total Staff (Member 3)</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">🏢</div>
-            <div className="stat-value" style={{ color: '#7c3aed' }}>{stats.adminEmployees}</div>
-            <div className="stat-label">Administrative Staff</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">🌾</div>
-            <div className="stat-value" style={{ color: '#059669' }}>{stats.fieldEmployees}</div>
-            <div className="stat-label">Field Staff</div>
           </div>
           <div className="stat-card">
             <div className="stat-icon">👥</div>
@@ -120,6 +118,20 @@ const DashboardPage = () => {
               {stats.activeMembers}
             </div>
             <div className="stat-label">Active Members</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">💰</div>
+            <div className="stat-value" style={{ color: '#16a34a' }}>
+              ৳{(stats.totalSavings || 0).toLocaleString()}
+            </div>
+            <div className="stat-label">Total Savings Balance</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">💳</div>
+            <div className="stat-value" style={{ color: '#7c3aed' }}>
+              {stats.activeSavingsAccounts}
+            </div>
+            <div className="stat-label">Active Savings Accounts</div>
           </div>
           <div className="stat-card">
             <div className="stat-icon">📋</div>

@@ -55,6 +55,33 @@ export const assignmentAPI = {
   getByOfficer: (officerId) => API.get(`/assignments/officer/${officerId}`),
 };
 
+// ─── Savings API (Member 1 - Module 2) ───────────────────────────────────────────
+export const savingsAPI = {
+  /** GET /api/savings/accounts?search=&status=&page=&limit= */
+  getAccounts: (params = {}) => API.get('/savings/accounts', { params }),
+
+  /** GET /api/savings/accounts/:id */
+  getAccountById: (id) => API.get(`/savings/accounts/${id}`),
+
+  /** POST /api/savings/accounts */
+  createAccount: (data) => API.post('/savings/accounts', data),
+
+  /** PATCH /api/savings/accounts/:id/status */
+  updateAccountStatus: (id, status) => API.patch(`/savings/accounts/${id}/status`, { status }),
+
+  /** GET /api/savings/ledger?accountId=&memberId=&type=&savingsType=&startDate=&endDate=&search=&page=&limit= */
+  getLedger: (params = {}) => API.get('/savings/ledger', { params }),
+
+  /** POST /api/savings/transactions */
+  createTransaction: (data) => API.post('/savings/transactions', data),
+
+  /** GET /api/savings/stats */
+  getStats: () => API.get('/savings/stats'),
+
+  /** GET /api/savings/member/:memberId */
+  getMemberSavings: (memberId) => API.get(`/savings/member/${memberId}`),
+};
+
 // ─── Employee API (Member 3) ─────────────────────────────────────────────────────
 export const employeeAPI = {
   /** GET /api/employees?search=&staffType=&employmentStatus=&department=&designation=&page=&limit= */

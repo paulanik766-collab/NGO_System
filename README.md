@@ -16,7 +16,7 @@ Daffodil International University
 
 | Member | Assigned Responsibilities | Status |
 | :--- | :--- | :--- |
-| **Member 1** | **1. Member Management**<br>• Register new NGO members with form validation<br>• List, search (name/ID/phone), and filter by status<br>• View member profile details & update information<br>• Toggle status between Active and Inactive<br><br>**2. Field Officer Management**<br>• View available field officers (integrated with Employee model)<br>• Assign field officer to members and/or collection groups<br>• View, filter, update, and remove assignments<br>• Prevent duplicate active assignments and enforce referential integrity | ✅ **Implemented & Verified** |
+| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
 | **Member 2** | • Member Verification<br>• NID & photo document upload<br>• Verification statuses (Pending, Verified, Rejected)<br>• File preview, rejection remarks & document deletion | ✅ **Implemented & Verified** |
 | **Member 3** | **Employee Management**<br>• CRUD operations for administrative and field staff profiles<br>• Designations management with presets & departmental mapping<br>• Employment statuses (Active, Inactive, On Leave, Probation, Terminated)<br>• Multi-field search, filtering, and aggregated statistics<br>• Referential integrity validation preventing deletion of staff with active field assignments<br>• Auto-synchronization with Member 1's Field Officer Assignment system | ✅ **Implemented & Verified** |
 
@@ -48,7 +48,7 @@ npm run dev
 ```bash
 cd backend
 npm test
-# Runs Member 1, Member 2 and Member 3 automated test suites
+# Runs automated test suites
 ```
 
 ---
@@ -71,6 +71,16 @@ npm test
 - `PUT /api/assignments/:id` — Update assignment notes/target
 - `DELETE /api/assignments/:id` — Remove (soft-delete) assignment
 
+### Member 1 Scope: Savings Management (Module 2)
+- `GET /api/savings/accounts` — Fetch savings accounts (supports `?search=` and `?status=`)
+- `POST /api/savings/accounts` — Open a new savings account for a member
+- `GET /api/savings/accounts/:id` — View account details and recent transactions
+- `PATCH /api/savings/accounts/:id/status` — Update account status (Active, Dormant, Closed)
+- `GET /api/savings/ledger` — Dedicated savings ledger with filters (`?type=`, `?savingsType=`, `?search=`) and summary stats
+- `POST /api/savings/transactions` — Log deposit/withdrawal with real-time balance update
+- `GET /api/savings/stats` — Overall platform savings metrics
+- `GET /api/savings/member/:memberId` — Member passbook and savings history
+
 ### Member 3 Scope: Employee Management
 - `GET /api/employees` — Fetch employees (supports `?search=`, `?staffType=`, `?employmentStatus=`, `?department=`, `?designation=`, `?page=`, `?limit=`)
 - `GET /api/employees/stats` — Aggregate metrics (total staff, administrative vs. field breakdown, status distribution, distinct designations/departments)
@@ -80,11 +90,10 @@ npm test
 - `PATCH /api/employees/:id/status` — Update employment status (`Active`, `Inactive`, `On Leave`, `Probation`, `Terminated`)
 - `DELETE /api/employees/:id` — Delete employee profile (enforces referential integrity check against active field assignments)
 
-### Member Verification (Member 2 Scope)
+### Member 2 Scope: Member Verification
 - `GET /api/verifications` — List all verification records (supports `?status=`, `?documentType=`, `?member=`, `?search=`)
 - `POST /api/verifications/upload` — Upload verification document (multipart/form-data: `member`, `documentType`, `document`)
 - `GET /api/verifications/:id` — Get single verification record by ID
 - `GET /api/verifications/member/:memberId` — Get all verification documents for a member
 - `PATCH /api/verifications/:id/status` — Update verification status (`Verified` / `Rejected`, with optional `remarks`)
 - `DELETE /api/verifications/:id` — Delete verification record and remove document file from storage
-
