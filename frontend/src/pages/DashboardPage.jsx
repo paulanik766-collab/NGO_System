@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { memberAPI, assignmentAPI } from '../services/api';
+import { memberAPI, assignmentAPI, savingsAPI } from '../services/api';
 import { LoadingSpinner } from '../components/common/UIComponents';
 
 const DashboardPage = () => {
@@ -10,6 +10,8 @@ const DashboardPage = () => {
     inactiveMembers: 0,
     totalOfficers: 0,
     activeAssignments: 0,
+    totalSavings: 0,
+    activeSavingsAccounts: 0,
   });
   const [recentMembers, setRecentMembers] = useState([]);
   const [recentAssignments, setRecentAssignments] = useState([]);
@@ -18,15 +20,17 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [membersRes, officersRes, assignmentsRes] = await Promise.all([
+        const [membersRes, officersRes, assignmentsRes, savingsRes] = await Promise.all([
           memberAPI.getAll({ limit: 100 }),
           assignmentAPI.getFieldOfficers(),
           assignmentAPI.getAll({ limit: 100 }),
+          savingsAPI.getStats().catch(() => ({ data: { data: {} } })),
         ]);
 
         const allMembers = membersRes.data.data || [];
         const allAssignments = assignmentsRes.data.data || [];
         const allOfficers = officersRes.data.data || [];
+        const savingsData = savingsRes.data.data || {};
 
         setStats({
           totalMembers: allMembers.length,
@@ -34,6 +38,8 @@ const DashboardPage = () => {
           inactiveMembers: allMembers.filter((m) => m.status === 'Inactive').length,
           totalOfficers: allOfficers.length,
           activeAssignments: allAssignments.filter((a) => a.status === 'Active').length,
+          totalSavings: savingsData.totalBalance || 0,
+          activeSavingsAccounts: savingsData.activeAccounts || 0,
         });
 
         setRecentMembers(allMembers.slice(0, 5));
@@ -64,6 +70,9 @@ const DashboardPage = () => {
           <Link to="/field-officers" className="btn btn-secondary">
             Officer Assignments
           </Link>
+          <Link to="/savings" className="btn btn-primary" style={{ backgroundColor: '#16a34a', borderColor: '#16a34a' }}>
+            💰 Savings Ledger
+          </Link>
         </div>
       </div>
 
@@ -72,9 +81,7 @@ const DashboardPage = () => {
         <div className="alert alert-info" style={{ marginBottom: '24px' }}>
           <span className="alert-icon">ℹ</span>
           <div>
-            <strong>Member 1 Evaluation Scope:</strong> This view reflects Member 1's assigned tasks
-            (<strong>Member Management</strong> & <strong>Field Officer Assignments</strong>).
-            Integration points are prepared for Member 2 (Verification) and Member 3 (Employee CRUD).
+            <strong>Member 1 Evaluation Scope (Module 1 & 2):</strong> Member Management, Field Officer Assignments, and <strong>Savings Management</strong> (Dedicated savings ledger with real-time balance updates).
           </div>
         </div>
 
@@ -93,11 +100,18 @@ const DashboardPage = () => {
             <div className="stat-label">Active Members</div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon">⏸️</div>
-            <div className="stat-value" style={{ color: '#dc2626' }}>
-              {stats.inactiveMembers}
+            <div className="stat-icon">💰</div>
+            <div className="stat-value" style={{ color: '#16a34a' }}>
+              ৳{(stats.totalSavings || 0).toLocaleString()}
             </div>
-            <div className="stat-label">Inactive Members</div>
+            <div className="stat-label">Total Savings Balance</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">💳</div>
+            <div className="stat-value" style={{ color: '#7c3aed' }}>
+              {stats.activeSavingsAccounts}
+            </div>
+            <div className="stat-label">Active Savings Accounts</div>
           </div>
           <div className="stat-card">
             <div className="stat-icon">👔</div>

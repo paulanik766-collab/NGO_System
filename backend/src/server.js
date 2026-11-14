@@ -11,6 +11,7 @@ const connectDB = require('./config/db');
 const memberRoutes = require('./routes/memberRoutes');
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const savingsRoutes = require('./routes/savingsRoutes');
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.use('/api/members', memberRoutes);
 
 // Member 1: Field Officer Assignments & field officer listing
 app.use('/api', assignmentRoutes);
+
+// Member 1 (Module 2): Savings Management (Accounts & Dedicated Ledger)
+app.use('/api/savings', savingsRoutes);
 
 // Member 3 scaffold: Employee Management
 app.use('/api/employees', employeeRoutes);

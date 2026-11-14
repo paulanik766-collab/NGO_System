@@ -4,6 +4,7 @@ import Sidebar from './components/common/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import FieldOfficersPage from './pages/FieldOfficersPage';
+import SavingsPage from './pages/SavingsPage';
 import './styles/global.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/field-officers" element={<FieldOfficersPage />} />
+            <Route path="/savings" element={<SavingsPage />} />
           </Routes>
         </main>
       </div>

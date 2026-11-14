@@ -15,9 +15,9 @@ Daffodil International University
 
 | Member | Assigned Responsibilities | Status in this Branch |
 | :--- | :--- | :--- |
-| **Member 1 (Current)** | **1. Member Management**<br>• Register new NGO members with form validation<br>• List, search (name/ID/phone), and filter by status<br>• View member profile details & update information<br>• Toggle status between Active and Inactive<br><br>**2. Field Officer Management**<br>• View available field officers (integrated with Employee model)<br>• Assign field officer to members and/or collection groups<br>• View, filter, update, and remove assignments<br>• Prevent duplicate active assignments and enforce referential integrity | ✅ **Implemented & Verified** |
-| **Member 2** | • Member Verification<br>• NID & photo document upload<br>• Verification statuses (Pending, Verified, Rejected) | ⏳ Dedicated workspace reserved |
-| **Member 3** | • Employee Management CRUD<br>• Employee designations & employment statuses | ⏳ Model & Route scaffolding provided |
+| **Member 1 (Current)** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
+| **Member 2** | • Member Verification (M1)<br>• Loan Management & Due/Overdue Management (M2) | ⏳ Team Member Scope |
+| **Member 3** | • Employee Management (M1)<br>• Installment Management (M2) | ⏳ Team Member Scope |
 
 ---
 
@@ -62,3 +62,14 @@ npm run dev
 - `GET /api/assignments/:id` — View assignment details
 - `PUT /api/assignments/:id` — Update assignment notes/target
 - `DELETE /api/assignments/:id` — Remove (soft-delete) assignment
+
+### Savings Management (Module 2)
+- `GET /api/savings/accounts` — Fetch savings accounts (supports `?search=` and `?status=`)
+- `POST /api/savings/accounts` — Open a new savings account for a member
+- `GET /api/savings/accounts/:id` — View account details and recent transactions
+- `PATCH /api/savings/accounts/:id/status` — Update account status (Active, Dormant, Closed)
+- `GET /api/savings/ledger` — Dedicated savings ledger with filters (`?type=`, `?savingsType=`, `?search=`) and summary stats
+- `POST /api/savings/transactions` — Log deposit/withdrawal with real-time balance update
+- `GET /api/savings/stats` — Overall platform savings metrics
+- `GET /api/savings/member/:memberId` — Member passbook and savings history
+
