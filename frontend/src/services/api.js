@@ -82,4 +82,52 @@ export const savingsAPI = {
   getMemberSavings: (memberId) => API.get(`/savings/member/${memberId}`),
 };
 
+// ─── Employee API (Member 3) ─────────────────────────────────────────────────────
+export const employeeAPI = {
+  /** GET /api/employees?search=&staffType=&employmentStatus=&department=&designation=&page=&limit= */
+  getAll: (params = {}) => API.get('/employees', { params }),
+
+  /** GET /api/employees/stats */
+  getStats: () => API.get('/employees/stats'),
+
+  /** GET /api/employees/:id */
+  getById: (id) => API.get(`/employees/${id}`),
+
+  /** POST /api/employees */
+  create: (data) => API.post('/employees', data),
+
+  /** PUT /api/employees/:id */
+  update: (id, data) => API.put(`/employees/${id}`, data),
+
+  /** PATCH /api/employees/:id/status */
+  updateStatus: (id, status) => API.patch(`/employees/${id}/status`, { status }),
+
+  /** DELETE /api/employees/:id */
+  delete: (id) => API.delete(`/employees/${id}`),
+};
+
+// ─── Verification API (Member 2) ───────────────────────────────────────────────
+export const verificationAPI = {
+  /** GET /api/verifications?status=&documentType=&member= */
+  getAll: (params = {}) => API.get('/verifications', { params }),
+
+  /** GET /api/verifications/:id */
+  getById: (id) => API.get(`/verifications/${id}`),
+
+  /** GET /api/verifications/member/:memberId */
+  getByMember: (memberId) => API.get(`/verifications/member/${memberId}`),
+
+  /** POST /api/verifications/upload (multipart/form-data) */
+  upload: (formData) =>
+    API.post('/verifications/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+
+  /** PATCH /api/verifications/:id/status */
+  updateStatus: (id, data) => API.patch(`/verifications/${id}/status`, data),
+
+  /** DELETE /api/verifications/:id */
+  delete: (id) => API.delete(`/verifications/${id}`),
+};
+
 export default API;

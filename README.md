@@ -8,16 +8,17 @@ Daffodil International University
 - **Frontend:** React.js (Vite), React Router v6, Axios, Vanilla CSS
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB, Mongoose ODM
+- **Testing:** Jest, Supertest, MongoDB Memory Server
 
 ---
 
 ## Group Division & Assigned Responsibilities
 
-| Member | Assigned Responsibilities | Status in this Branch |
+| Member | Assigned Responsibilities | Status |
 | :--- | :--- | :--- |
-| **Member 1 (Current)** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
-| **Member 2** | • Member Verification (M1)<br>• Loan Management & Due/Overdue Management (M2) | ⏳ Team Member Scope |
-| **Member 3** | • Employee Management (M1)<br>• Installment Management (M2) | ⏳ Team Member Scope |
+| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
+| **Member 2** | • Member Verification<br>• NID & photo document upload<br>• Verification statuses (Pending, Verified, Rejected)<br>• File preview, rejection remarks & document deletion | ✅ **Implemented & Verified** |
+| **Member 3** | **Employee Management**<br>• CRUD operations for administrative and field staff profiles<br>• Designations management with presets & departmental mapping<br>• Employment statuses (Active, Inactive, On Leave, Probation, Terminated)<br>• Multi-field search, filtering, and aggregated statistics<br>• Referential integrity validation preventing deletion of staff with active field assignments<br>• Auto-synchronization with Member 1's Field Officer Assignment system | ✅ **Implemented & Verified** |
 
 ---
 
@@ -43,11 +44,18 @@ npm run dev
 # Frontend runs on http://localhost:3000
 ```
 
+### 3. Run Automated Tests
+```bash
+cd backend
+npm test
+# Runs automated test suites
+```
+
 ---
 
-## API Documentation (Member 1 Scope)
+## API Documentation
 
-### Member Management
+### Member 1 Scope: Member Management
 - `GET /api/members` — Fetch members (supports `?search=` and `?status=`)
 - `POST /api/members` — Register a new member
 - `GET /api/members/:id` — View single member details
@@ -55,7 +63,7 @@ npm run dev
 - `PATCH /api/members/:id/status` — Toggle Active/Inactive status
 - `DELETE /api/members/:id` — Delete a member
 
-### Field Officer Assignments
+### Member 1 Scope: Field Officer Assignments
 - `GET /api/field-officers` — List field officers available for assignment
 - `GET /api/assignments` — Fetch assignments (supports `?fieldOfficer=`, `?member=`, `?status=`)
 - `POST /api/assignments` — Create a field officer assignment
@@ -63,7 +71,7 @@ npm run dev
 - `PUT /api/assignments/:id` — Update assignment notes/target
 - `DELETE /api/assignments/:id` — Remove (soft-delete) assignment
 
-### Savings Management (Module 2)
+### Member 1 Scope: Savings Management (Module 2)
 - `GET /api/savings/accounts` — Fetch savings accounts (supports `?search=` and `?status=`)
 - `POST /api/savings/accounts` — Open a new savings account for a member
 - `GET /api/savings/accounts/:id` — View account details and recent transactions
@@ -73,3 +81,19 @@ npm run dev
 - `GET /api/savings/stats` — Overall platform savings metrics
 - `GET /api/savings/member/:memberId` — Member passbook and savings history
 
+### Member 3 Scope: Employee Management
+- `GET /api/employees` — Fetch employees (supports `?search=`, `?staffType=`, `?employmentStatus=`, `?department=`, `?designation=`, `?page=`, `?limit=`)
+- `GET /api/employees/stats` — Aggregate metrics (total staff, administrative vs. field breakdown, status distribution, distinct designations/departments)
+- `GET /api/employees/:id` — View employee profile details and active field assignments count
+- `POST /api/employees` — Register a new staff profile (administrative or field staff)
+- `PUT /api/employees/:id` — Update staff profile details
+- `PATCH /api/employees/:id/status` — Update employment status (`Active`, `Inactive`, `On Leave`, `Probation`, `Terminated`)
+- `DELETE /api/employees/:id` — Delete employee profile (enforces referential integrity check against active field assignments)
+
+### Member 2 Scope: Member Verification
+- `GET /api/verifications` — List all verification records (supports `?status=`, `?documentType=`, `?member=`, `?search=`)
+- `POST /api/verifications/upload` — Upload verification document (multipart/form-data: `member`, `documentType`, `document`)
+- `GET /api/verifications/:id` — Get single verification record by ID
+- `GET /api/verifications/member/:memberId` — Get all verification documents for a member
+- `PATCH /api/verifications/:id/status` — Update verification status (`Verified` / `Rejected`, with optional `remarks`)
+- `DELETE /api/verifications/:id` — Delete verification record and remove document file from storage

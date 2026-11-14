@@ -12,6 +12,7 @@ const memberRoutes = require('./routes/memberRoutes');
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const savingsRoutes = require('./routes/savingsRoutes');
+const verificationRoutes = require('./routes/verificationRoutes');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 
 // ─── Health check ───────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
@@ -40,6 +42,9 @@ app.use('/api/savings', savingsRoutes);
 
 // Member 3 scaffold: Employee Management
 app.use('/api/employees', employeeRoutes);
+
+// Member 2: Member Verification
+app.use('/api/verifications', verificationRoutes);
 
 // ─── 404 handler ────────────────────────────────────────────────────────────────
 app.use((req, res) => {

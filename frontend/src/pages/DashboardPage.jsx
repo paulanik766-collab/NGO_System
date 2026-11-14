@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { memberAPI, assignmentAPI, savingsAPI } from '../services/api';
+import { memberAPI, assignmentAPI, savingsAPI, employeeAPI } from '../services/api';
 import { LoadingSpinner } from '../components/common/UIComponents';
 
 const DashboardPage = () => {
@@ -12,25 +12,34 @@ const DashboardPage = () => {
     activeAssignments: 0,
     totalSavings: 0,
     activeSavingsAccounts: 0,
+    totalEmployees: 0,
+    adminEmployees: 0,
+    fieldEmployees: 0,
   });
   const [recentMembers, setRecentMembers] = useState([]);
   const [recentAssignments, setRecentAssignments] = useState([]);
+  const [recentEmployees, setRecentEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [membersRes, officersRes, assignmentsRes, savingsRes] = await Promise.all([
-          memberAPI.getAll({ limit: 100 }),
-          assignmentAPI.getFieldOfficers(),
-          assignmentAPI.getAll({ limit: 100 }),
-          savingsAPI.getStats().catch(() => ({ data: { data: {} } })),
-        ]);
+        const [membersRes, officersRes, assignmentsRes, employeeStatsRes, employeesRes, savingsRes] =
+          await Promise.all([
+            memberAPI.getAll({ limit: 100 }),
+            assignmentAPI.getFieldOfficers(),
+            assignmentAPI.getAll({ limit: 100 }),
+            employeeAPI.getStats().catch(() => ({ data: { data: {} } })),
+            employeeAPI.getAll({ limit: 5 }).catch(() => ({ data: { data: [] } })),
+            savingsAPI.getStats().catch(() => ({ data: { data: {} } })),
+          ]);
 
         const allMembers = membersRes.data.data || [];
         const allAssignments = assignmentsRes.data.data || [];
         const allOfficers = officersRes.data.data || [];
-        const savingsData = savingsRes.data.data || {};
+        const empStats = employeeStatsRes.data?.data || {};
+        const staffList = employeesRes.data?.data || [];
+        const savingsData = savingsRes.data?.data || {};
 
         setStats({
           totalMembers: allMembers.length,
@@ -40,10 +49,14 @@ const DashboardPage = () => {
           activeAssignments: allAssignments.filter((a) => a.status === 'Active').length,
           totalSavings: savingsData.totalBalance || 0,
           activeSavingsAccounts: savingsData.activeAccounts || 0,
+          totalEmployees: empStats.total || 0,
+          adminEmployees: empStats.administrative || 0,
+          fieldEmployees: empStats.fieldStaff || 0,
         });
 
         setRecentMembers(allMembers.slice(0, 5));
         setRecentAssignments(allAssignments.slice(0, 5));
+        setRecentEmployees(staffList.slice(0, 5));
       } catch (err) {
         console.error('Failed to fetch dashboard data', err);
       } finally {
@@ -63,8 +76,11 @@ const DashboardPage = () => {
           <h1>NGO Management System</h1>
           <p>Group 04, Section C2 — SE331 Software Engineering Design Capstone</p>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Link to="/members" className="btn btn-primary">
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Link to="/employees" className="btn btn-primary">
+            Manage Employees (M3)
+          </Link>
+          <Link to="/members" className="btn btn-secondary">
             Manage Members
           </Link>
           <Link to="/field-officers" className="btn btn-secondary">
@@ -77,20 +93,24 @@ const DashboardPage = () => {
       </div>
 
       <div className="page-content">
-        {/* Module Scope Notice for Faculty/Evaluator */}
         <div className="alert alert-info" style={{ marginBottom: '24px' }}>
           <span className="alert-icon">ℹ</span>
           <div>
-            <strong>Member 1 Evaluation Scope (Module 1 & 2):</strong> Member Management, Field Officer Assignments, and <strong>Savings Management</strong> (Dedicated savings ledger with real-time balance updates).
+            <strong>Integrated Overview:</strong> Member 1 (<strong>Member Management, Officer Assignments & Savings Management</strong>), Member 2 (<strong>Member Verification</strong>), and Member 3 (<strong>Employee Management</strong>) are active in this system.
           </div>
         </div>
 
         {/* Stats Grid */}
         <div className="stats-grid">
           <div className="stat-card">
+            <div className="stat-icon">👔</div>
+            <div className="stat-value" style={{ color: '#4f46e5' }}>{stats.totalEmployees}</div>
+            <div className="stat-label">Total Staff (Member 3)</div>
+          </div>
+          <div className="stat-card">
             <div className="stat-icon">👥</div>
             <div className="stat-value">{stats.totalMembers}</div>
-            <div className="stat-label">Total Registered Members</div>
+            <div className="stat-label">Total Members</div>
           </div>
           <div className="stat-card">
             <div className="stat-icon">✅</div>
@@ -114,13 +134,6 @@ const DashboardPage = () => {
             <div className="stat-label">Active Savings Accounts</div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon">👔</div>
-            <div className="stat-value" style={{ color: '#2563eb' }}>
-              {stats.totalOfficers}
-            </div>
-            <div className="stat-label">Field Officers</div>
-          </div>
-          <div className="stat-card">
             <div className="stat-icon">📋</div>
             <div className="stat-value" style={{ color: '#0891b2' }}>
               {stats.activeAssignments}
@@ -130,7 +143,61 @@ const DashboardPage = () => {
         </div>
 
         {/* Recent Data Sections */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+          {/* Member 3 Staff Summary */}
+          <div className="card">
+            <div className="card-header">
+              <h3>Recent Staff Profiles (M3)</h3>
+              <Link to="/employees" className="btn btn-secondary btn-sm">
+                View All
+              </Link>
+            </div>
+            <div className="card-body" style={{ padding: 0 }}>
+              {recentEmployees.length === 0 ? (
+                <div style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>
+                  No employees registered yet
+                </div>
+              ) : (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Staff</th>
+                      <th>Designation</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentEmployees.map((e) => (
+                      <tr key={e._id}>
+                        <td>
+                          <strong>{e.fullName}</strong>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{e.employeeId}</div>
+                        </td>
+                        <td>
+                          <span style={{ fontSize: '0.85rem' }}>{e.designation}</span>
+                        </td>
+                        <td>
+                          <span
+                            className={`badge ${
+                              e.employmentStatus === 'Active'
+                                ? 'badge-active'
+                                : e.employmentStatus === 'On Leave'
+                                ? 'badge-leave'
+                                : 'badge-inactive'
+                            }`}
+                          >
+                            {e.employmentStatus}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+
+          {/* Member 1 Members Summary */}
           <div className="card">
             <div className="card-header">
               <h3>Recently Registered Members</h3>
@@ -177,9 +244,10 @@ const DashboardPage = () => {
             </div>
           </div>
 
+          {/* Member 1 Officer Assignments */}
           <div className="card">
             <div className="card-header">
-              <h3>Recent Field Officer Assignments</h3>
+              <h3>Field Officer Assignments</h3>
               <Link to="/field-officers" className="btn btn-secondary btn-sm">
                 View All
               </Link>
