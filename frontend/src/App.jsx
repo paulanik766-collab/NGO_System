@@ -5,6 +5,8 @@ import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import FieldOfficersPage from './pages/FieldOfficersPage';
 import VerificationPage from './pages/VerificationPage';
+import LoansPage from './pages/LoansPage';
+import DueOverduePage from './pages/DueOverduePage';
 import './styles/global.css';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
             <Route path="/members" element={<MembersPage />} />
             <Route path="/field-officers" element={<FieldOfficersPage />} />
             <Route path="/verification" element={<VerificationPage />} />
+            <Route path="/loans" element={<LoansPage />} />
+            <Route path="/due-overdue" element={<DueOverduePage />} />
           </Routes>
         </main>
       </div>
