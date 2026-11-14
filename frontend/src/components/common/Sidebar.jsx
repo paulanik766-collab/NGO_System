@@ -66,6 +66,20 @@ const Sidebar = () => {
           <span className="nav-icon">🪪</span>
           <span>Member Verification</span>
         </NavLink>
+        <NavLink
+          to="/loans"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">💵</span>
+          <span>Loan Management</span>
+        </NavLink>
+        <NavLink
+          to="/due-overdue"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">⚠️</span>
+          <span>Due & Overdue</span>
+        </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Team Workspaces (Stubs)

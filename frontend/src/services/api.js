@@ -130,4 +130,38 @@ export const verificationAPI = {
   delete: (id) => API.delete(`/verifications/${id}`),
 };
 
+// ─── Loan API (Member 2 — Module 2) ────────────────────────────────────────────
+export const loanAPI = {
+  /** GET /api/loans?status=&member=&search= */
+  getAll: (params = {}) => API.get('/loans', { params }),
+
+  /** GET /api/loans/:id */
+  getById: (id) => API.get(`/loans/${id}`),
+
+  /** POST /api/loans */
+  create: (data) => API.post('/loans', data),
+
+  /** PATCH /api/loans/:id/status */
+  updateStatus: (id, data) => API.patch(`/loans/${id}/status`, data),
+
+  /** POST /api/loans/:id/installments/:installmentNumber/pay */
+  payInstallment: (id, installmentNumber, data = {}) =>
+    API.post(`/loans/${id}/installments/${installmentNumber}/pay`, data),
+
+  /** DELETE /api/loans/:id */
+  delete: (id) => API.delete(`/loans/${id}`),
+};
+
+// ─── Due & Overdue API (Member 2 — Module 2) ───────────────────────────────────
+export const dueOverdueAPI = {
+  /** GET /api/due-overdue/summary */
+  getSummary: () => API.get('/due-overdue/summary'),
+
+  /** GET /api/due-overdue/defaulters?riskLevel=&search= */
+  getDefaulters: (params = {}) => API.get('/due-overdue/defaulters', { params }),
+
+  /** GET /api/due-overdue/upcoming?days= */
+  getUpcoming: (params = {}) => API.get('/due-overdue/upcoming', { params }),
+};
+
 export default API;
