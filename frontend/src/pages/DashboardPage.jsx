@@ -80,6 +80,9 @@ const DashboardPage = () => {
           <Link to="/employees" className="btn btn-primary">
             Manage Employees (M3)
           </Link>
+          <Link to="/installments" className="btn btn-primary" style={{ backgroundColor: '#2563eb', borderColor: '#2563eb' }}>
+            💳 Installments (M3)
+          </Link>
           <Link to="/members" className="btn btn-secondary">
             Manage Members
           </Link>
@@ -91,6 +94,7 @@ const DashboardPage = () => {
           </Link>
         </div>
       </div>
+
 
       <div className="page-content">
         <div className="alert alert-info" style={{ marginBottom: '24px' }}>

@@ -164,4 +164,27 @@ export const dueOverdueAPI = {
   getUpcoming: (params = {}) => API.get('/due-overdue/upcoming', { params }),
 };
 
+// ─── Installment API (Member 3 — Module 2) ────────────────────────────────────
+export const installmentAPI = {
+  /** GET /api/installments/calculator-preview?principalAmount=&interestRate=&termDuration=&termType=&startDate= */
+  previewSchedule: (params = {}) => API.get('/installments/calculator-preview', { params }),
+
+  /** GET /api/installments/stats */
+  getStats: () => API.get('/installments/stats'),
+
+  /** GET /api/installments/payments?search=&paymentMethod=&loanId=&page=&limit= */
+  getPayments: (params = {}) => API.get('/installments/payments', { params }),
+
+  /** GET /api/installments/schedule/:loanId */
+  getSchedule: (loanId) => API.get(`/installments/schedule/${loanId}`),
+
+  /** POST /api/installments/generate-schedule/:loanId */
+  generateSchedule: (loanId, data = {}) => API.post(`/installments/generate-schedule/${loanId}`, data),
+
+  /** POST /api/installments/collect */
+  collectPayment: (data) => API.post('/installments/collect', data),
+};
+
 export default API;
+
+

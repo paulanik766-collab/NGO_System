@@ -10,7 +10,8 @@ Daffodil International University (DIU) • Group No: 04 • Lab Section: C2
 | :--- | :--- | :--- |
 | **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
 | **Member 2** | **Module 1:**<br>• **Member Verification**: NID & photo document upload with Multer, status tracking (Pending, Verified, Rejected), preview & file deletion<br><br>**Module 2:**<br>• **Loan Management**: Application portal, financial calculations, approval & disbursement workflow, and installment tracking<br>• **Due & Overdue Management**: Automated detection engine for past-due installments, risk analysis, and real-time Defaulters list | ✅ **Implemented & Verified** |
-| **Member 3** | **Module 1:**<br>• **Employee Management**: CRUD operations for administrative and field staff profiles, designations & employment statuses, multi-field search & filtering, referential integrity with assignments | ✅ **Implemented & Verified** |
+| **Member 3** | **Module 1:**<br>• **Employee Management**: CRUD operations for administrative and field staff profiles, designations & employment statuses, multi-field search & filtering, referential integrity with assignments<br><br>**Module 2:**<br>• **Installment Management**: Automated calculation and generation of repayment schedules upon loan disbursement, along with collecting and recording installment payments with receipt generation | ✅ **Implemented & Verified** |
+
 
 ---
 
@@ -101,3 +102,12 @@ npm test
 - `PUT /api/employees/:id` — Update staff profile details
 - `PATCH /api/employees/:id/status` — Update employment status (`Active`, `Inactive`, `On Leave`, `Probation`, `Terminated`)
 - `DELETE /api/employees/:id` — Delete employee profile (enforces referential integrity check against active field assignments)
+
+### Member 3 Scope: Installment Management (Module 2)
+- `GET /api/installments/calculator-preview` — Simulate and preview repayment schedule (`?principalAmount=`, `?interestRate=`, `?termDuration=`, `?termType=`, `?startDate=`)
+- `POST /api/installments/generate-schedule/:loanId` — Generate repayment schedule upon disbursement
+- `POST /api/installments/collect` — Collect and record installment payment with digital receipt generation
+- `GET /api/installments/schedule/:loanId` — Detailed repayment schedule, payment progress, and transactions
+- `GET /api/installments/payments` — Collection receipts & payment transaction ledger (supports `?search=`, `?paymentMethod=`, `?loanId=`)
+- `GET /api/installments/stats` — Aggregate installment collection metrics and pending repayment totals
+
