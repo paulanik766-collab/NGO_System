@@ -30,6 +30,14 @@ const Sidebar = () => {
           <span className="nav-icon">👔</span>
           <span>Employee Management</span>
         </NavLink>
+        <NavLink
+          to="/installments"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">💳</span>
+          <span>Installment Management</span>
+        </NavLink>
+
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Member 1 Tasks

@@ -15,6 +15,7 @@ const savingsRoutes = require('./routes/savingsRoutes');
 const verificationRoutes = require('./routes/verificationRoutes');
 const loanRoutes = require('./routes/loanRoutes');
 const dueOverdueRoutes = require('./routes/dueOverdueRoutes');
+const installmentRoutes = require('./routes/installmentRoutes');
 
 const app = express();
 
@@ -42,8 +43,11 @@ app.use('/api', assignmentRoutes);
 // Member 1 (Module 2): Savings Management (Accounts & Dedicated Ledger)
 app.use('/api/savings', savingsRoutes);
 
-// Member 3 scaffold: Employee Management
+// Member 3: Employee Management (Module 1)
 app.use('/api/employees', employeeRoutes);
+
+// Member 3 (Module 2): Installment Management (Repayment Schedules & Collections)
+app.use('/api/installments', installmentRoutes);
 
 // Member 2: Member Verification (Module 1)
 app.use('/api/verifications', verificationRoutes);
@@ -51,6 +55,7 @@ app.use('/api/verifications', verificationRoutes);
 // Member 2: Loan Management & Due/Overdue Management (Module 2)
 app.use('/api/loans', loanRoutes);
 app.use('/api/due-overdue', dueOverdueRoutes);
+
 
 // ─── 404 handler ────────────────────────────────────────────────────────────────
 app.use((req, res) => {
