@@ -7,6 +7,7 @@ import FieldOfficersPage from './pages/FieldOfficersPage';
 import SavingsPage from './pages/SavingsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import VerificationPage from './pages/VerificationPage';
+import ReceiptsPage from './pages/ReceiptsPage';
 import './styles/global.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/savings" element={<SavingsPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/verification" element={<VerificationPage />} />
+            <Route path="/receipts" element={<ReceiptsPage />} />
           </Routes>
         </main>
       </div>

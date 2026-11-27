@@ -89,6 +89,9 @@ const DashboardPage = () => {
           <Link to="/savings" className="btn btn-primary" style={{ backgroundColor: '#16a34a', borderColor: '#16a34a' }}>
             💰 Savings Ledger
           </Link>
+          <Link to="/receipts" className="btn btn-secondary">
+            🧾 Receipt Builder
+          </Link>
         </div>
       </div>
 
@@ -96,7 +99,7 @@ const DashboardPage = () => {
         <div className="alert alert-info" style={{ marginBottom: '24px' }}>
           <span className="alert-icon">ℹ</span>
           <div>
-            <strong>Integrated Overview:</strong> Member 1 (<strong>Member Management, Officer Assignments & Savings Management</strong>), Member 2 (<strong>Member Verification</strong>), and Member 3 (<strong>Employee Management</strong>) are active in this system.
+            <strong>Integrated Overview:</strong> Member 1 (<strong>Member Management, Officer Assignments, Savings Management & Receipt Generation</strong>), Member 2 (<strong>Member Verification</strong>), and Member 3 (<strong>Employee Management</strong>) are active in this system.
           </div>
         </div>
 

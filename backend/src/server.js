@@ -13,6 +13,7 @@ const assignmentRoutes = require('./routes/assignmentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const savingsRoutes = require('./routes/savingsRoutes');
 const verificationRoutes = require('./routes/verificationRoutes');
+const receiptRoutes = require('./routes/receiptRoutes');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/employees', employeeRoutes);
 
 // Member 2: Member Verification
 app.use('/api/verifications', verificationRoutes);
+app.use('/api/receipts', receiptRoutes);
 
 // ─── 404 handler ────────────────────────────────────────────────────────────────
 app.use((req, res) => {

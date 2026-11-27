@@ -130,4 +130,12 @@ export const verificationAPI = {
   delete: (id) => API.delete(`/verifications/${id}`),
 };
 
+export const receiptAPI = {
+  getAll: (params = {}) => API.get('/receipts', { params }),
+  getById: (id) => API.get(`/receipts/${id}`),
+  create: (data) => API.post('/receipts', data),
+  delete: (id) => API.delete(`/receipts/${id}`),
+  getStats: () => API.get('/receipts/stats'),
+};
+
 export default API;

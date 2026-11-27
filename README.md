@@ -16,7 +16,7 @@ Daffodil International University
 
 | Member | Assigned Responsibilities | Status |
 | :--- | :--- | :--- |
-| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
+| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates<br><br>**Module 3:**<br>• **Receipt Generation**: Digital receipt builder that instantly generates printable/downloadable PDF payment receipts upon collection | ✅ **Implemented & Verified** |
 | **Member 2** | • Member Verification<br>• NID & photo document upload<br>• Verification statuses (Pending, Verified, Rejected)<br>• File preview, rejection remarks & document deletion | ✅ **Implemented & Verified** |
 | **Member 3** | **Employee Management**<br>• CRUD operations for administrative and field staff profiles<br>• Designations management with presets & departmental mapping<br>• Employment statuses (Active, Inactive, On Leave, Probation, Terminated)<br>• Multi-field search, filtering, and aggregated statistics<br>• Referential integrity validation preventing deletion of staff with active field assignments<br>• Auto-synchronization with Member 1's Field Officer Assignment system | ✅ **Implemented & Verified** |
 
@@ -80,6 +80,13 @@ npm test
 - `POST /api/savings/transactions` — Log deposit/withdrawal with real-time balance update
 - `GET /api/savings/stats` — Overall platform savings metrics
 - `GET /api/savings/member/:memberId` — Member passbook and savings history
+
+### Member 1 Scope: Receipt Generation (Module 3)
+- `GET /api/receipts` — Fetch receipts (supports `?search=` and `?collectionType=`)
+- `POST /api/receipts` — Generate a new digital payment receipt upon collection
+- `GET /api/receipts/:id` — View single receipt details
+- `GET /api/receipts/stats` — Aggregate metrics (total receipts, total amount, cash vs. digital collections)
+- `DELETE /api/receipts/:id` — Delete receipt record
 
 ### Member 3 Scope: Employee Management
 - `GET /api/employees` — Fetch employees (supports `?search=`, `?staffType=`, `?employmentStatus=`, `?department=`, `?designation=`, `?page=`, `?limit=`)

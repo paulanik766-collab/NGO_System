@@ -55,6 +55,13 @@ const Sidebar = () => {
           <span className="nav-icon">💰</span>
           <span>Savings Management</span>
         </NavLink>
+        <NavLink
+          to="/receipts"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🧾</span>
+          <span>Receipt Generation</span>
+        </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Member 2 Tasks
