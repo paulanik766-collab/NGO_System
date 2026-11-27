@@ -138,4 +138,31 @@ export const receiptAPI = {
   getStats: () => API.get('/receipts/stats'),
 };
 
+export const loanAPI = {
+  getAll: (params = {}) => API.get('/loans', { params }),
+  getById: (id) => API.get(`/loans/${id}`),
+  create: (data) => API.post('/loans', data),
+  updateStatus: (id, data) => API.patch(`/loans/${id}/status`, data),
+  payInstallment: (id, installmentNumber, data = {}) =>
+    API.post(`/loans/${id}/installments/${installmentNumber}/pay`, data),
+  delete: (id) => API.delete(`/loans/${id}`),
+};
+
+export const dueOverdueAPI = {
+  getSummary: () => API.get('/due-overdue/summary'),
+  getDefaulters: (params = {}) => API.get('/due-overdue/defaulters', { params }),
+  getUpcoming: (params = {}) => API.get('/due-overdue/upcoming', { params }),
+};
+
+export const installmentAPI = {
+  previewSchedule: (params = {}) => API.get('/installments/calculator-preview', { params }),
+  getStats: () => API.get('/installments/stats'),
+  getPayments: (params = {}) => API.get('/installments/payments', { params }),
+  getSchedule: (loanId) => API.get(`/installments/schedule/${loanId}`),
+  generateSchedule: (loanId, data = {}) => API.post(`/installments/generate-schedule/${loanId}`, data),
+  collectPayment: (data) => API.post('/installments/collect', data),
+};
+
 export default API;
+
+

@@ -8,6 +8,9 @@ import SavingsPage from './pages/SavingsPage';
 import EmployeesPage from './pages/EmployeesPage';
 import VerificationPage from './pages/VerificationPage';
 import ReceiptsPage from './pages/ReceiptsPage';
+import LoansPage from './pages/LoansPage';
+import DueOverduePage from './pages/DueOverduePage';
+import InstallmentsPage from './pages/InstallmentsPage';
 import './styles/global.css';
 
 function App() {
@@ -24,11 +27,15 @@ function App() {
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/verification" element={<VerificationPage />} />
             <Route path="/receipts" element={<ReceiptsPage />} />
+            <Route path="/loans" element={<LoansPage />} />
+            <Route path="/due-overdue" element={<DueOverduePage />} />
+            <Route path="/installments" element={<InstallmentsPage />} />
           </Routes>
         </main>
       </div>
     </BrowserRouter>
   );
 }
+
 
 export default App;

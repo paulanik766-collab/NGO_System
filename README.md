@@ -1,14 +1,6 @@
-# NGO Management System
-
-**SE331 Software Engineering Design Capstone Project**  
-Daffodil International University  
-**Group:** 04 | **Section:** C2  
-
-## Technology Stack
-- **Frontend:** React.js (Vite), React Router v6, Axios, Vanilla CSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB, Mongoose ODM
-- **Testing:** Jest, Supertest, MongoDB Memory Server
+# NGO Management System — Microfinance & Field Operations Platform
+**SE331 • Software Engineering Design Capstone Project • Fall 2026**  
+Daffodil International University (DIU) • Group No: 04 • Lab Section: C2
 
 ---
 
@@ -17,8 +9,8 @@ Daffodil International University
 | Member | Assigned Responsibilities | Status |
 | :--- | :--- | :--- |
 | **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates<br><br>**Module 3:**<br>• **Receipt Generation**: Digital receipt builder that instantly generates printable/downloadable PDF payment receipts upon collection | ✅ **Implemented & Verified** |
-| **Member 2** | • Member Verification<br>• NID & photo document upload<br>• Verification statuses (Pending, Verified, Rejected)<br>• File preview, rejection remarks & document deletion | ✅ **Implemented & Verified** |
-| **Member 3** | **Employee Management**<br>• CRUD operations for administrative and field staff profiles<br>• Designations management with presets & departmental mapping<br>• Employment statuses (Active, Inactive, On Leave, Probation, Terminated)<br>• Multi-field search, filtering, and aggregated statistics<br>• Referential integrity validation preventing deletion of staff with active field assignments<br>• Auto-synchronization with Member 1's Field Officer Assignment system | ✅ **Implemented & Verified** |
+| **Member 2** | **Module 1:**<br>• **Member Verification**: NID & photo document upload with Multer, status tracking (Pending, Verified, Rejected), preview & file deletion<br><br>**Module 2:**<br>• **Loan Management**: Application portal, financial calculations, approval & disbursement workflow, and installment tracking<br>• **Due & Overdue Management**: Automated detection engine for past-due installments, risk analysis, and real-time Defaulters list | ✅ **Implemented & Verified** |
+| **Member 3** | **Module 1:**<br>• **Employee Management**: CRUD operations for administrative and field staff profiles, designations & employment statuses, multi-field search & filtering, referential integrity with assignments<br><br>**Module 2:**<br>• **Installment Management**: Automated calculation and generation of repayment schedules upon loan disbursement, along with collecting and recording installment payments with receipt generation | ✅ **Implemented & Verified** |
 
 ---
 
@@ -88,7 +80,28 @@ npm test
 - `GET /api/receipts/stats` — Aggregate metrics (total receipts, total amount, cash vs. digital collections)
 - `DELETE /api/receipts/:id` — Delete receipt record
 
-### Member 3 Scope: Employee Management
+### Member 2 Scope: Member Verification (Module 1)
+- `GET /api/verifications` — List all verification records (supports `?status=`, `?documentType=`, `?member=`, `?search=`)
+- `POST /api/verifications/upload` — Upload verification document (multipart/form-data: `member`, `documentType`, `document`)
+- `GET /api/verifications/:id` — Get single verification record by ID
+- `GET /api/verifications/member/:memberId` — Get all verification documents for a member
+- `PATCH /api/verifications/:id/status` — Update verification status (`Verified` / `Rejected`, with optional `remarks`)
+- `DELETE /api/verifications/:id` — Delete verification record and remove document file from storage
+
+### Member 2 Scope: Loan Management (Module 2)
+- `GET /api/loans` — List all loans with filters (`?status=`, `?member=`, `?search=`)
+- `POST /api/loans` — Submit a new micro-loan application
+- `GET /api/loans/:id` — Get loan details with member profile and repayment schedule
+- `PATCH /api/loans/:id/status` — Transition status (`Approved`, `Rejected`, `Disbursed`, `Closed`)
+- `POST /api/loans/:id/installments/:installmentNumber/pay` — Record an installment payment
+- `DELETE /api/loans/:id` — Delete pending or rejected loan application
+
+### Member 2 Scope: Due & Overdue Management (Module 2)
+- `GET /api/due-overdue/summary` — Analytics summary (total overdue amount, defaulter count, upcoming dues)
+- `GET /api/due-overdue/defaulters` — Real-time defaulters list with risk levels (`Critical`, `Moderate`, `Low`)
+- `GET /api/due-overdue/upcoming` — Upcoming installment collections in next 7-14 days
+
+### Member 3 Scope: Employee Management (Module 1)
 - `GET /api/employees` — Fetch employees (supports `?search=`, `?staffType=`, `?employmentStatus=`, `?department=`, `?designation=`, `?page=`, `?limit=`)
 - `GET /api/employees/stats` — Aggregate metrics (total staff, administrative vs. field breakdown, status distribution, distinct designations/departments)
 - `GET /api/employees/:id` — View employee profile details and active field assignments count
@@ -97,10 +110,10 @@ npm test
 - `PATCH /api/employees/:id/status` — Update employment status (`Active`, `Inactive`, `On Leave`, `Probation`, `Terminated`)
 - `DELETE /api/employees/:id` — Delete employee profile (enforces referential integrity check against active field assignments)
 
-### Member 2 Scope: Member Verification
-- `GET /api/verifications` — List all verification records (supports `?status=`, `?documentType=`, `?member=`, `?search=`)
-- `POST /api/verifications/upload` — Upload verification document (multipart/form-data: `member`, `documentType`, `document`)
-- `GET /api/verifications/:id` — Get single verification record by ID
-- `GET /api/verifications/member/:memberId` — Get all verification documents for a member
-- `PATCH /api/verifications/:id/status` — Update verification status (`Verified` / `Rejected`, with optional `remarks`)
-- `DELETE /api/verifications/:id` — Delete verification record and remove document file from storage
+### Member 3 Scope: Installment Management (Module 2)
+- `GET /api/installments/calculator-preview` — Simulate and preview repayment schedule (`?principalAmount=`, `?interestRate=`, `?termDuration=`, `?termType=`, `?startDate=`)
+- `POST /api/installments/generate-schedule/:loanId` — Generate repayment schedule upon disbursement
+- `POST /api/installments/collect` — Collect and record installment payment with digital receipt generation
+- `GET /api/installments/schedule/:loanId` — Detailed repayment schedule, payment progress, and transactions
+- `GET /api/installments/payments` — Collection receipts & payment transaction ledger (supports `?search=`, `?paymentMethod=`, `?loanId=`)
+- `GET /api/installments/stats` — Aggregate installment collection metrics and pending repayment totals
