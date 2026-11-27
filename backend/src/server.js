@@ -13,6 +13,7 @@ const assignmentRoutes = require('./routes/assignmentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const savingsRoutes = require('./routes/savingsRoutes');
 const verificationRoutes = require('./routes/verificationRoutes');
+const receiptRoutes = require('./routes/receiptRoutes');
 const loanRoutes = require('./routes/loanRoutes');
 const dueOverdueRoutes = require('./routes/dueOverdueRoutes');
 const installmentRoutes = require('./routes/installmentRoutes');
@@ -51,6 +52,7 @@ app.use('/api/installments', installmentRoutes);
 
 // Member 2: Member Verification (Module 1)
 app.use('/api/verifications', verificationRoutes);
+app.use('/api/receipts', receiptRoutes);
 
 // Member 2: Loan Management & Due/Overdue Management (Module 2)
 app.use('/api/loans', loanRoutes);

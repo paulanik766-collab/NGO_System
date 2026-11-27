@@ -130,58 +130,36 @@ export const verificationAPI = {
   delete: (id) => API.delete(`/verifications/${id}`),
 };
 
-// ─── Loan API (Member 2 — Module 2) ────────────────────────────────────────────
+export const receiptAPI = {
+  getAll: (params = {}) => API.get('/receipts', { params }),
+  getById: (id) => API.get(`/receipts/${id}`),
+  create: (data) => API.post('/receipts', data),
+  delete: (id) => API.delete(`/receipts/${id}`),
+  getStats: () => API.get('/receipts/stats'),
+};
+
 export const loanAPI = {
-  /** GET /api/loans?status=&member=&search= */
   getAll: (params = {}) => API.get('/loans', { params }),
-
-  /** GET /api/loans/:id */
   getById: (id) => API.get(`/loans/${id}`),
-
-  /** POST /api/loans */
   create: (data) => API.post('/loans', data),
-
-  /** PATCH /api/loans/:id/status */
   updateStatus: (id, data) => API.patch(`/loans/${id}/status`, data),
-
-  /** POST /api/loans/:id/installments/:installmentNumber/pay */
   payInstallment: (id, installmentNumber, data = {}) =>
     API.post(`/loans/${id}/installments/${installmentNumber}/pay`, data),
-
-  /** DELETE /api/loans/:id */
   delete: (id) => API.delete(`/loans/${id}`),
 };
 
-// ─── Due & Overdue API (Member 2 — Module 2) ───────────────────────────────────
 export const dueOverdueAPI = {
-  /** GET /api/due-overdue/summary */
   getSummary: () => API.get('/due-overdue/summary'),
-
-  /** GET /api/due-overdue/defaulters?riskLevel=&search= */
   getDefaulters: (params = {}) => API.get('/due-overdue/defaulters', { params }),
-
-  /** GET /api/due-overdue/upcoming?days= */
   getUpcoming: (params = {}) => API.get('/due-overdue/upcoming', { params }),
 };
 
-// ─── Installment API (Member 3 — Module 2) ────────────────────────────────────
 export const installmentAPI = {
-  /** GET /api/installments/calculator-preview?principalAmount=&interestRate=&termDuration=&termType=&startDate= */
   previewSchedule: (params = {}) => API.get('/installments/calculator-preview', { params }),
-
-  /** GET /api/installments/stats */
   getStats: () => API.get('/installments/stats'),
-
-  /** GET /api/installments/payments?search=&paymentMethod=&loanId=&page=&limit= */
   getPayments: (params = {}) => API.get('/installments/payments', { params }),
-
-  /** GET /api/installments/schedule/:loanId */
   getSchedule: (loanId) => API.get(`/installments/schedule/${loanId}`),
-
-  /** POST /api/installments/generate-schedule/:loanId */
   generateSchedule: (loanId, data = {}) => API.post(`/installments/generate-schedule/${loanId}`, data),
-
-  /** POST /api/installments/collect */
   collectPayment: (data) => API.post('/installments/collect', data),
 };
 

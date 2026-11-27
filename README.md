@@ -8,10 +8,9 @@ Daffodil International University (DIU) • Group No: 04 • Lab Section: C2
 
 | Member | Assigned Responsibilities | Status |
 | :--- | :--- | :--- |
-| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates | ✅ **Implemented & Verified** |
+| **Member 1** | **Module 1:**<br>• **Member Management**: Register, search, filter, update, toggle active/inactive<br>• **Field Officer Management**: Link field officers with members/collection groups<br><br>**Module 2:**<br>• **Savings Management**: Dedicated savings ledger for logging mandatory/voluntary deposits and withdrawals with real-time balance updates<br><br>**Module 3:**<br>• **Receipt Generation**: Digital receipt builder that instantly generates printable/downloadable PDF payment receipts upon collection | ✅ **Implemented & Verified** |
 | **Member 2** | **Module 1:**<br>• **Member Verification**: NID & photo document upload with Multer, status tracking (Pending, Verified, Rejected), preview & file deletion<br><br>**Module 2:**<br>• **Loan Management**: Application portal, financial calculations, approval & disbursement workflow, and installment tracking<br>• **Due & Overdue Management**: Automated detection engine for past-due installments, risk analysis, and real-time Defaulters list | ✅ **Implemented & Verified** |
 | **Member 3** | **Module 1:**<br>• **Employee Management**: CRUD operations for administrative and field staff profiles, designations & employment statuses, multi-field search & filtering, referential integrity with assignments<br><br>**Module 2:**<br>• **Installment Management**: Automated calculation and generation of repayment schedules upon loan disbursement, along with collecting and recording installment payments with receipt generation | ✅ **Implemented & Verified** |
-
 
 ---
 
@@ -37,17 +36,18 @@ npm run dev
 # Frontend runs on http://localhost:3000
 ```
 
-### 3. Running Automated Tests
+### 3. Run Automated Tests
 ```bash
 cd backend
 npm test
+# Runs automated test suites
 ```
 
 ---
 
 ## API Documentation
 
-### Member 1 Scope: Member Management (Module 1)
+### Member 1 Scope: Member Management
 - `GET /api/members` — Fetch members (supports `?search=` and `?status=`)
 - `POST /api/members` — Register a new member
 - `GET /api/members/:id` — View single member details
@@ -55,7 +55,7 @@ npm test
 - `PATCH /api/members/:id/status` — Toggle Active/Inactive status
 - `DELETE /api/members/:id` — Delete a member
 
-### Member 1 Scope: Field Officer Assignments (Module 1)
+### Member 1 Scope: Field Officer Assignments
 - `GET /api/field-officers` — List field officers available for assignment
 - `GET /api/assignments` — Fetch assignments (supports `?fieldOfficer=`, `?member=`, `?status=`)
 - `POST /api/assignments` — Create a field officer assignment
@@ -72,6 +72,13 @@ npm test
 - `POST /api/savings/transactions` — Log deposit/withdrawal with real-time balance update
 - `GET /api/savings/stats` — Overall platform savings metrics
 - `GET /api/savings/member/:memberId` — Member passbook and savings history
+
+### Member 1 Scope: Receipt Generation (Module 3)
+- `GET /api/receipts` — Fetch receipts (supports `?search=` and `?collectionType=`)
+- `POST /api/receipts` — Generate a new digital payment receipt upon collection
+- `GET /api/receipts/:id` — View single receipt details
+- `GET /api/receipts/stats` — Aggregate metrics (total receipts, total amount, cash vs. digital collections)
+- `DELETE /api/receipts/:id` — Delete receipt record
 
 ### Member 2 Scope: Member Verification (Module 1)
 - `GET /api/verifications` — List all verification records (supports `?status=`, `?documentType=`, `?member=`, `?search=`)
@@ -110,4 +117,3 @@ npm test
 - `GET /api/installments/schedule/:loanId` — Detailed repayment schedule, payment progress, and transactions
 - `GET /api/installments/payments` — Collection receipts & payment transaction ledger (supports `?search=`, `?paymentMethod=`, `?loanId=`)
 - `GET /api/installments/stats` — Aggregate installment collection metrics and pending repayment totals
-
