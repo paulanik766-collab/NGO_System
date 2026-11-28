@@ -17,6 +17,8 @@ const receiptRoutes = require('./routes/receiptRoutes');
 const loanRoutes = require('./routes/loanRoutes');
 const dueOverdueRoutes = require('./routes/dueOverdueRoutes');
 const installmentRoutes = require('./routes/installmentRoutes');
+const authRoutes = require('./routes/authRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 const app = express();
 
@@ -57,6 +59,10 @@ app.use('/api/receipts', receiptRoutes);
 // Member 2: Loan Management & Due/Overdue Management (Module 2)
 app.use('/api/loans', loanRoutes);
 app.use('/api/due-overdue', dueOverdueRoutes);
+
+// Member 3 (Module 3): User Authentication & Role Management & Unified Transaction Management
+app.use('/api/auth', authRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 
 // ─── 404 handler ────────────────────────────────────────────────────────────────

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Loan = require('../models/Loan');
 const Member = require('../models/Member');
 const { calculateLoanFinancials, generateRepaymentSchedule } = require('../utils/loanCalculator');
+const { recordTransactionHelper } = require('./transactionController');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -204,6 +205,21 @@ const updateLoanStatus = async (req, res) => {
         loan.termType,
         loan.disbursedDate
       );
+
+      try {
+        if (loan.member) {
+          await recordTransactionHelper({
+            type: 'loan_disbursement',
+            amount: Number(loan.principalAmount || loan.amount || 0),
+            member: loan.member,
+            referenceId: loan.loanId || loan._id.toString(),
+            referenceModel: 'Loan',
+            paymentMethod: 'Bank Transfer',
+            performedBy: req.user?.name || 'Loan Officer',
+            remarks: `Loan disbursement for ${loan.loanId || loan._id}`,
+          });
+        }
+      } catch (txE) {}
     } else if (status === 'Closed') {
       if (loan.status !== 'Disbursed') {
         return res.status(400).json({ success: false, message: 'Only Disbursed loans can be Closed' });

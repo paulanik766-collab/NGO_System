@@ -1,7 +1,25 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
+  const { user, role, logout } = useAuth();
+
+  const getRoleBadgeStyle = (r) => {
+    switch (r) {
+      case 'admin':
+        return { background: '#6d28d9', color: '#ffffff' };
+      case 'manager':
+        return { background: '#0284c7', color: '#ffffff' };
+      case 'accountant':
+        return { background: '#d97706', color: '#ffffff' };
+      case 'field_officer':
+        return { background: '#16a34a', color: '#ffffff' };
+      default:
+        return { background: '#475569', color: '#ffffff' };
+    }
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
@@ -20,14 +38,14 @@ const Sidebar = () => {
           <span>Dashboard</span>
         </NavLink>
 
-        <div className="nav-section-title" style={{ marginTop: '16px' }}>
+        <div className="nav-section-title" style={{ marginTop: '16px', color: '#38bdf8' }}>
           Member 3 Tasks (Active)
         </div>
         <NavLink
           to="/employees"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
-          <span className="nav-icon">👔</span>
+          <span className="nav-icon">👤</span>
           <span>Employee Management</span>
         </NavLink>
         <NavLink
@@ -37,7 +55,20 @@ const Sidebar = () => {
           <span className="nav-icon">💳</span>
           <span>Installment Management</span>
         </NavLink>
-
+        <NavLink
+          to="/transactions"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">📑</span>
+          <span>Transaction Management</span>
+        </NavLink>
+        <NavLink
+          to="/users"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🛡️</span>
+          <span>User & Role Management</span>
+        </NavLink>
 
         <div className="nav-section-title" style={{ marginTop: '16px' }}>
           Member 1 Tasks
@@ -78,7 +109,7 @@ const Sidebar = () => {
           to="/verification"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
-          <span className="nav-icon">🪪</span>
+          <span className="nav-icon">🚪</span>
           <span>Member Verification</span>
         </NavLink>
         <NavLink
@@ -95,15 +126,64 @@ const Sidebar = () => {
           <span className="nav-icon">⚠️</span>
           <span>Due & Overdue</span>
         </NavLink>
-
-        <div className="nav-section-title" style={{ marginTop: '16px' }}>
-          Team Workspaces (Stubs)
-        </div>
       </nav>
 
-      <div style={{ padding: '16px 20px', borderTop: '1px solid #334155', fontSize: '0.75rem', color: '#94a3b8' }}>
-        <strong>Member 3 Workspace</strong>
-        <div>DIU Software Engineering (SE331)</div>
+      <div style={{
+        padding: '16px 20px',
+        borderTop: '1px solid #334155',
+        fontSize: '0.8125rem',
+        color: '#cbd5e1',
+        background: '#0f172a',
+      }}>
+        {user ? (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <div style={{ fontWeight: 600, color: '#f8fafc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user.name}
+              </div>
+              <span style={{
+                ...getRoleBadgeStyle(role),
+                fontSize: '0.7rem',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+              }}>
+                {role?.replace('_', ' ')}
+              </span>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '10px' }}>
+              {user.email}
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <NavLink to="/login" style={{ fontSize: '0.75rem', color: '#38bdf8', textDecoration: 'none' }}>
+                Switch Account
+              </NavLink>
+              <span style={{ color: '#64748b' }}>•</span>
+              <button
+                type="button"
+                onClick={logout}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#f87171',
+                  padding: 0,
+                  fontSize: '0.75rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div style={{ marginBottom: '8px', color: '#94a3b8' }}>Not signed in</div>
+            <NavLink to="/login" className="btn btn-primary btn-sm" style={{ width: '100%', textAlign: 'center', display: 'block' }}>
+              Sign In
+            </NavLink>
+          </div>
+        )}
       </div>
     </aside>
   );

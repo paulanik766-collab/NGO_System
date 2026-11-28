@@ -13,6 +13,7 @@ const Loan = require('../models/Loan');
 const Member = require('../models/Member');
 const Employee = require('../models/Employee');
 const InstallmentPayment = require('../models/InstallmentPayment');
+const { recordTransactionHelper } = require('./transactionController');
 const { generateRepaymentSchedule, calculateLoanFinancials } = require('../utils/loanCalculator');
 
 const isValidObjectId = (id) => mongoose.Types?.ObjectId?.isValid ? mongoose.Types.ObjectId.isValid(id) : /^[0-9a-fA-F]{24}$/.test(id);
@@ -227,6 +228,19 @@ const collectInstallmentPayment = async (req, res) => {
       lateFine: Number(lateFine) || 0,
       notes,
     });
+
+    try {
+      await recordTransactionHelper({
+        type: 'installment_payment',
+        amount: payAmount,
+        member: loan.member._id,
+        referenceId: receiptNumber,
+        referenceModel: 'InstallmentPayment',
+        paymentMethod: paymentMethod || 'Cash',
+        performedBy: finalCollectorName || 'Field Officer',
+        remarks: `Installment #${instNum} for Loan ${loan.loanId || loan._id}`,
+      });
+    } catch (txErr) {}
 
     res.status(201).json({
       success: true,

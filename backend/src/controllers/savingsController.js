@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const SavingsAccount = require('../models/SavingsAccount');
 const SavingsLedger = require('../models/SavingsLedger');
 const Member = require('../models/Member');
+const { recordTransactionHelper } = require('./transactionController');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -145,6 +146,19 @@ const createAccount = async (req, res) => {
         collectedBy: 'Branch Staff',
         remarks: 'Initial deposit upon account opening',
       });
+
+      try {
+        await recordTransactionHelper({
+          type: 'savings_deposit',
+          amount: depositAmount,
+          member,
+          referenceId: transactionId,
+          referenceModel: 'SavingsLedger',
+          paymentMethod: 'Cash',
+          performedBy: 'Branch Staff',
+          remarks: 'Initial deposit upon account opening',
+        });
+      } catch (txE) {}
     }
 
     const populated = await SavingsAccount.findById(newAccount._id).populate('member', 'memberId fullName phone');
@@ -273,6 +287,19 @@ const logTransaction = async (req, res) => {
       remarks,
       date: date ? new Date(date) : new Date(),
     });
+
+    try {
+      await recordTransactionHelper({
+        type: type === 'Withdrawal' ? 'savings_withdrawal' : 'savings_deposit',
+        amount: parsedAmount,
+        member: account.member,
+        referenceId: transactionId,
+        referenceModel: 'SavingsLedger',
+        paymentMethod: paymentMethod || 'Cash',
+        performedBy: collectedBy || 'Field Officer',
+        remarks: remarks || `${savingsType} ${type}`,
+      });
+    } catch (txE) {}
 
     const populated = await SavingsLedger.findById(ledgerEntry._id)
       .populate('member', 'memberId fullName phone')

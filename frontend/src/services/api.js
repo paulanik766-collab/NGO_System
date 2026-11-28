@@ -10,6 +10,14 @@ const API = axios.create({
   timeout: 10000,
 });
 
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('ngo_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // ─── Member API (Member 1) ───────────────────────────────────────────────────────
 export const memberAPI = {
   /** GET /api/members?search=&status=&page=&limit= */
@@ -161,6 +169,24 @@ export const installmentAPI = {
   getSchedule: (loanId) => API.get(`/installments/schedule/${loanId}`),
   generateSchedule: (loanId, data = {}) => API.post(`/installments/generate-schedule/${loanId}`, data),
   collectPayment: (data) => API.post('/installments/collect', data),
+};
+
+export const authAPI = {
+  login: (data) => API.post('/auth/login', data),
+  register: (data) => API.post('/auth/register', data),
+  getMe: () => API.get('/auth/me'),
+  getUsers: (params = {}) => API.get('/auth/users', { params }),
+  updateRole: (id, role) => API.put(`/auth/users/${id}/role`, { role }),
+  toggleStatus: (id) => API.put(`/auth/users/${id}/status`),
+  updateProfile: (data) => API.put('/auth/profile', data),
+};
+
+export const transactionAPI = {
+  getAll: (params = {}) => API.get('/transactions', { params }),
+  getById: (id) => API.get(`/transactions/${id}`),
+  create: (data) => API.post('/transactions', data),
+  getStats: () => API.get('/transactions/stats'),
+  export: () => API.get('/transactions/export'),
 };
 
 export default API;
